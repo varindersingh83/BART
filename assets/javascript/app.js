@@ -4,7 +4,7 @@ var trainsNum
 function ajaxQuery() {
   // u = 'https://api.giphy.com/v1/gifs/search?q=' + searchVal + '&api_key=ughKaFh6kz4IdmoxQrJ06Q7U7090yfYM&limit=' + maxResult;
   u =
-    'http://api.bart.gov/api/etd.aspx?cmd=etd&orig=EMBR&key=QVM2-5EIY-9Q9T-DWE9&json=y'
+    'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=EMBR&key=QVM2-5EIY-9Q9T-DWE9&json=y'
   console.log('====>' + u)
   $.ajax({
     url: u,
