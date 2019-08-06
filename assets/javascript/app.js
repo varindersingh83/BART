@@ -10,6 +10,8 @@ function ajaxQuery() {
     url: u,
     method: 'GET'
   }).then(function(response) {
+    $('#Platform1').empty()
+    $('#Platform2').empty()
     // debugger
     console.log('======>' + response)
     stationName = response.root.station[0].name
@@ -43,4 +45,9 @@ function ajaxQuery() {
     console.log('something')
   })
 }
+
 ajaxQuery()
+
+setInterval(function() {
+  ajaxQuery()
+}, 3 * 1000)

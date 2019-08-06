@@ -34,14 +34,22 @@
   <body>
     <h1>BART Schedule</h1>
     <h3>Station: <span id="stationName"></span></h3>
-    <br />
-    <h3>Platform 1</h3>
-    <div id="Platform1"></div>
-    <br />
-    <h3>Platform 2</h3>
-    <div id="Platform2"></div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h4>Peninsula</h4>
+          <div id="Platform1"></div>
+        </div>
+        <div class="col">
+          <h4>East Bay</h4>
+          <div id="Platform2"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- javascript local -->
     <script src="assets/javascript/app.js"></script>
   </body>
