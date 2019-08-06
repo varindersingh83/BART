@@ -19,16 +19,23 @@ function ajaxQuery() {
     for (var i = 0; i < trainsNum; i++) {
       var dest = response.root.station[0].etd[i].destination
       var etas = response.root.station[0].etd[i].estimate.length
-
       console.log('destinations == > ' + dest)
-      var divTag = $('<div>').text(dest)
-      $('#destinations').append(divTag)
+      // debugger
+      var min = []
+      var bartPlatform
+      // console.log('platfrom = ' + bartPlatform)
       for (var e = 0; e < etas; e++) {
-        var min = response.root.station[0].etd[i].estimate[e].minutes
-        var platform = response.root.station[0].etd[i].estimate[e].platform
-        $('#destinations').append(
-          $('<p>').text(`Minutes:${min}    Platform:${platform} `)
-        )
+        min.push(response.root.station[0].etd[i].estimate[e].minutes)
+        bartPlatform = response.root.station[0].etd[i].estimate[e].platform
+      }
+      console.log('platfrom = ' + bartPlatform)
+      var divTag = $('<div>').text(dest)
+      if (bartPlatform == 1) {
+        $('#Platform1').append(divTag)
+        $('#Platform1').append($('<p>').text(`Minutes:${min.join(',')}`))
+      } else {
+        $('#Platform2').append(divTag)
+        $('#Platform2').append($('<p>').text(`Minutes:${min.join(',')}`))
       }
       // $('<div></div>').text('something...')
     }
