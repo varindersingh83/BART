@@ -3,4 +3,26 @@ h3,
 h4,
 div {
   text-align: center;
+  color: #dfe5e7;
+}
+
+#bgImg {
+  background-image: url('../images/bart.jpg');
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 100vh;
+  z-index: -10;
+}
+
+#bgImg-Overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -5;
+  background-color: rgba(0, 0, 0, 0.829);
 }

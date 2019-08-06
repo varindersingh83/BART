@@ -50,4 +50,4 @@ ajaxQuery()
 
 setInterval(function() {
   ajaxQuery()
-}, 3 * 1000)
+}, 10 * 1000)
