@@ -1,53 +1,111 @@
-var stationName
-var trainsNum
-// var
+var currentStation = "EMBR";
+var stations = [
+  { name: "12th St. Oakland City Center", abbr: "12TH" },
+  { name: "16th St. Mission", abbr: "16TH" },
+  { name: "19th St. Oakland", abbr: "19TH" },
+  { name: "24th St. Mission", abbr: "24TH" },
+  { name: "Antioch", abbr: "ANTC" },
+  { name: "Ashby", abbr: "ASHB" },
+  { name: "Balboa Park", abbr: "BALB" },
+  { name: "Bay Fair", abbr: "BAYF" },
+  { name: "Berryessa/North San Jose", abbr: "BERY" },
+  { name: "Castro Valley", abbr: "CAST" },
+  { name: "Civic Center/UN Plaza", abbr: "CIVC" },
+  { name: "Coliseum", abbr: "COLS" },
+  { name: "Colma", abbr: "COLM" },
+  { name: "Concord", abbr: "CONC" },
+  { name: "Daly City", abbr: "DALY" },
+  { name: "Downtown Berkeley", abbr: "DBRK" },
+  { name: "Dublin/Pleasanton", abbr: "DUBL" },
+  { name: "El Cerrito del Norte", abbr: "DELN" },
+  { name: "El Cerrito Plaza", abbr: "PLZA" },
+  { name: "Embarcadero", abbr: "EMBR" },
+  { name: "Fremont", abbr: "FRMT" },
+  { name: "Fruitvale", abbr: "FTVL" },
+  { name: "Glen Park", abbr: "GLEN" },
+  { name: "Hayward", abbr: "HAYW" },
+  { name: "Lafayette", abbr: "LAFY" },
+  { name: "Lake Merritt", abbr: "LAKE" },
+  { name: "MacArthur", abbr: "MCAR" },
+  { name: "Millbrae", abbr: "MLBR" },
+  { name: "Milpitas", abbr: "MLPT" },
+  { name: "Montgomery St.", abbr: "MONT" },
+  { name: "North Berkeley", abbr: "NBRK" },
+  { name: "North Concord/Martinez", abbr: "NCON" },
+  { name: "Oakland International Airport", abbr: "OAKL" },
+  { name: "Orinda", abbr: "ORIN" },
+  { name: "Pittsburg/Bay Point", abbr: "PITT" },
+  { name: "Pittsburg Center", abbr: "PCTR" },
+  { name: "Pleasant Hill/Contra Costa Centre", abbr: "PHIL" },
+  { name: "Powell St.", abbr: "POWL" },
+  { name: "Richmond", abbr: "RICH" },
+  { name: "Rockridge", abbr: "ROCK" },
+  { name: "San Bruno", abbr: "SBRN" },
+  { name: "San Francisco International Airport", abbr: "SFIA" },
+  { name: "San Leandro", abbr: "SANL" },
+  { name: "South Hayward", abbr: "SHAY" },
+  { name: "South San Francisco", abbr: "SSAN" },
+  { name: "Union City", abbr: "UCTY" },
+  { name: "Walnut Creek", abbr: "WCRK" },
+  { name: "Warm Springs/South Fremont", abbr: "WARM" },
+  { name: "West Dublin/Pleasanton", abbr: "WDUB" },
+  { name: "West Oakland", abbr: "WOAK" }
+];
+
+function populateDropdown() {
+  var selector = $('#stationSelect');
+  stations.forEach(function(stn) {
+    var option = $('<option>').text(stn.name).val(stn.abbr);
+    if (stn.abbr === currentStation) option.attr('selected', 'selected');
+    selector.append(option);
+  });
+}
+
 function ajaxQuery() {
-  // u = 'https://api.giphy.com/v1/gifs/search?q=' + searchVal + '&api_key=ughKaFh6kz4IdmoxQrJ06Q7U7090yfYM&limit=' + maxResult;
-  u =
-    'https://api.bart.gov/api/etd.aspx?cmd=etd&orig=EMBR&key=QVM2-5EIY-9Q9T-DWE9&json=y'
-  console.log('====>' + u)
+  var u = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${currentStation}&key=QVM2-5EIY-9Q9T-DWE9&json=y`;
+  console.log('====>' + u);
   $.ajax({
     url: u,
     method: 'GET'
   }).then(function(response) {
-    $('#Platform1').empty()
-    $('#Platform2').empty()
-    // debugger
-    console.log('======>' + response)
-    stationName = response.root.station[0].name
-    $('#stationName').text(stationName)
-    trainsNum = response.root.station[0].etd.length
-    console.log('number of destinations = ' + trainsNum)
-    for (var i = 0; i < trainsNum; i++) {
-      var dest = response.root.station[0].etd[i].destination
-      var etas = response.root.station[0].etd[i].estimate.length
-      console.log('destinations == > ' + dest)
-      // debugger
-      var min = []
-      var bartPlatform
-      // console.log('platfrom = ' + bartPlatform)
-      for (var e = 0; e < etas; e++) {
-        min.push(response.root.station[0].etd[i].estimate[e].minutes)
-        bartPlatform = response.root.station[0].etd[i].estimate[e].platform
-      }
-      console.log('platfrom = ' + bartPlatform)
-      var divTag = $('<div>').text(dest)
-      if (bartPlatform == 1) {
-        $('#Platform1').append(divTag)
-        $('#Platform1').append($('<p>').text(`Minutes:${min.join(',')}`))
-      } else {
-        $('#Platform2').append(divTag)
-        $('#Platform2').append($('<p>').text(`Minutes:${min.join(',')}`))
-      }
-      // $('<div></div>').text('something...')
+    $('#Platform1').empty();
+    $('#Platform2').empty();
+    if (!response.root.station[0].etd) {
+      $('#stationName').text(response.root.station[0].name + " (No data)");
+      return;
     }
-    // $('#stationName').text(stationName)
-    console.log('something')
-  })
+    $('#stationName').text(response.root.station[0].name);
+    var etds = response.root.station[0].etd;
+    for (var i = 0; i < etds.length; i++) {
+      var dest = etds[i].destination;
+      var estimates = etds[i].estimate;
+      var min = [];
+      var bartPlatform;
+      for (var e = 0; e < estimates.length; e++) {
+        min.push(estimates[e].minutes);
+        bartPlatform = estimates[e].platform;
+      }
+      var divTag = $('<div>').addClass('dest-name').text(dest);
+      var pTag = $('<p>').text(`Minutes: ${min.join(', ')}`);
+      if (bartPlatform == 1) {
+        $('#Platform1').append(divTag).append(pTag);
+      } else {
+        $('#Platform2').append(divTag).append(pTag);
+      }
+    }
+  });
 }
 
-ajaxQuery()
+$(document).ready(function() {
+  populateDropdown();
+  ajaxQuery();
 
-setInterval(function() {
-  ajaxQuery()
-}, 10 * 1000)
+  $('#stationSelect').on('change', function() {
+    currentStation = $(this).val();
+    ajaxQuery();
+  });
+
+  setInterval(function() {
+    ajaxQuery();
+  }, 15 * 1000);
+});
