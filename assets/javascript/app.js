@@ -54,9 +54,13 @@ var stations = [
 
 function populateDropdown() {
   var selector = $('#stationSelect');
+  selector.empty();
+  console.log('Populating dropdown with ' + stations.length + ' stations');
   stations.forEach(function(stn) {
     var option = $('<option>').text(stn.name).val(stn.abbr);
-    if (stn.abbr === currentStation) option.attr('selected', 'selected');
+    if (stn.abbr === currentStation) {
+      option.attr('selected', 'selected');
+    }
     selector.append(option);
   });
 }
