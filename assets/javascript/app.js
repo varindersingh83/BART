@@ -90,7 +90,7 @@ function ajaxQuery() {
         bartPlatform = estimates[e].platform;
       }
       var divTag = $('<div>').addClass('dest-name').text(dest);
-      var pTag = $('<p>').text(`Minutes: ${min.join(', ')}`);
+      var pTag = $('<p>').addClass('minutes-text').text(`Mins: ${min.join(', ')}`);
       if (bartPlatform == 1) {
         $('#Platform1').append(divTag).append(pTag);
       } else {

@@ -31,26 +31,36 @@
     />
     <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
   </head>
-  <body>
-    <div id="bgImg">
-      <div id="bgImg-Overlay">
-        <h1>BART Schedule</h1>
-        <div class="form-group col-md-4 offset-md-4">
-          <select id="stationSelect" class="form-control">
+  <body class="bg-yellow">
+    <div id="bgImg"></div>
+    <div class="main-content">
+      <div class="app-card shadow-retro border-black p-4">
+        <h1 class="title-text mb-4">BART TRACKER</h1>
+        
+        <div class="form-group mb-4">
+          <label for="stationSelect" class="label-text">CHOOSE STATION</label>
+          <select id="stationSelect" class="form-control border-black shadow-retro-sm">
             <!-- Stations will be populated here -->
           </select>
         </div>
-        <h3>Station: <span id="stationName"></span></h3>
 
-        <div class="container">
-          <div class="row">
-            <div class="col">
-              <h4>Peninsula</h4>
-              <div id="Platform1"></div>
+        <div class="station-header border-black bg-blue p-2 mb-4">
+          <h3 class="mb-0">STATION: <span id="stationName" class="text-white"></span></h3>
+        </div>
+
+        <div class="container-fluid px-0">
+          <div class="row no-gutters">
+            <div class="col-12 col-md-6 mb-4 mb-md-0 pr-md-2">
+              <div class="platform-card border-black bg-white shadow-retro-sm h-100 p-3">
+                <h4 class="border-bottom border-black pb-2 mb-3">PENINSULA</h4>
+                <div id="Platform1" class="train-list"></div>
+              </div>
             </div>
-            <div class="col">
-              <h4>East Bay</h4>
-              <div id="Platform2"></div>
+            <div class="col-12 col-md-6 pl-md-2">
+              <div class="platform-card border-black bg-white shadow-retro-sm h-100 p-3">
+                <h4 class="border-bottom border-black pb-2 mb-3">EAST BAY</h4>
+                <div id="Platform2" class="train-list"></div>
+              </div>
             </div>
           </div>
         </div>
