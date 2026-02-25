@@ -66,7 +66,7 @@ function populateDropdown() {
 }
 
 function ajaxQuery() {
-  var u = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${currentStation}&key=QVM2-5EIY-9Q9T-DWE9&json=y`;
+  var u = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${currentStation}&key=MW9S-E7SL-26DU-VV8V&json=y`;
   console.log('====>' + u);
   $.ajax({
     url: u,
@@ -74,22 +74,34 @@ function ajaxQuery() {
   }).then(function(response) {
     $('#Platform1').empty();
     $('#Platform2').empty();
-    if (!response.root.station[0].etd) {
-      $('#stationName').text(response.root.station[0].name + " (No data)");
+    
+    if (!response || !response.root || !response.root.station || !response.root.station[0]) {
+       console.error("Invalid API response", response);
+       return;
+    }
+
+    var stationData = response.root.station[0];
+    if (!stationData.etd || stationData.etd.length === 0) {
+      $('#Platform1').append($('<p>').addClass('minutes-text').text("No upcoming trains"));
       return;
     }
-    $('#stationName').text(response.root.station[0].name);
-    var etds = response.root.station[0].etd;
+
+    var etds = stationData.etd;
     for (var i = 0; i < etds.length; i++) {
       var dest = etds[i].destination;
       var estimates = etds[i].estimate;
+      
+      if (!Array.isArray(estimates)) {
+        estimates = [estimates];
+      }
+
       var min = [];
       var bartPlatform;
       for (var e = 0; e < estimates.length; e++) {
         min.push(estimates[e].minutes);
         bartPlatform = estimates[e].platform;
       }
-      var divTag = $('<div>').addClass('dest-name').text(dest);
+      var divTag = $('<div>').addClass('dest-name text-left').text(dest);
       var pTag = $('<p>').addClass('minutes-text').text(`Mins: ${min.join(', ')}`);
       if (bartPlatform == 1) {
         $('#Platform1').append(divTag).append(pTag);
@@ -97,6 +109,8 @@ function ajaxQuery() {
         $('#Platform2').append(divTag).append(pTag);
       }
     }
+  }).fail(function(err) {
+    console.error("API Request Failed", err);
   });
 }
 
