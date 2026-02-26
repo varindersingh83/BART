@@ -25,6 +25,14 @@ type BartResponse = {
 
 let currentStation = "EMBR";
 let logSeq = 0;
+let warnedNoProxy = false;
+
+const isLocalhost =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
+const configuredProxyBase =
+  (window as unknown as { BART_PROXY_BASE?: string }).BART_PROXY_BASE;
+const apiBase: string | null = configuredProxyBase ?? (isLocalhost ? "" : null);
 
 const stations: Station[] = [
   { name: "12th St. Oakland City Center", abbr: "12TH" },
@@ -93,7 +101,17 @@ function populateDropdown(): void {
 }
 
 function ajaxQuery(): void {
-  const u = `/api/etd?orig=${currentStation}`;
+  if (!apiBase) {
+    if (!warnedNoProxy) {
+      warnedNoProxy = true;
+      logError(
+        "No API proxy configured for GitHub Pages. Use local dev server or set window.BART_PROXY_BASE."
+      );
+    }
+    return;
+  }
+
+  const u = `${apiBase}/api/etd?orig=${currentStation}`;
   logInfo("Requesting " + u);
   $.ajax({
     url: u,

@@ -1,6 +1,11 @@
 "use strict";
 let currentStation = "EMBR";
 let logSeq = 0;
+let warnedNoProxy = false;
+const isLocalhost = window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1";
+const configuredProxyBase = window.BART_PROXY_BASE;
+const apiBase = configuredProxyBase !== null && configuredProxyBase !== void 0 ? configuredProxyBase : (isLocalhost ? "" : null);
 const stations = [
     { name: "12th St. Oakland City Center", abbr: "12TH" },
     { name: "16th St. Mission", abbr: "16TH" },
@@ -66,7 +71,14 @@ function populateDropdown() {
     });
 }
 function ajaxQuery() {
-    const u = `/api/etd?orig=${currentStation}`;
+    if (!apiBase) {
+        if (!warnedNoProxy) {
+            warnedNoProxy = true;
+            logError("No API proxy configured for GitHub Pages. Use local dev server or set window.BART_PROXY_BASE.");
+        }
+        return;
+    }
+    const u = `${apiBase}/api/etd?orig=${currentStation}`;
     logInfo("Requesting " + u);
     $.ajax({
         url: u,
