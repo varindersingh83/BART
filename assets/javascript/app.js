@@ -1,129 +1,156 @@
-var currentStation = "EMBR";
-var stations = [
-  { name: "12th St. Oakland City Center", abbr: "12TH" },
-  { name: "16th St. Mission", abbr: "16TH" },
-  { name: "19th St. Oakland", abbr: "19TH" },
-  { name: "24th St. Mission", abbr: "24TH" },
-  { name: "Antioch", abbr: "ANTC" },
-  { name: "Ashby", abbr: "ASHB" },
-  { name: "Balboa Park", abbr: "BALB" },
-  { name: "Bay Fair", abbr: "BAYF" },
-  { name: "Berryessa/North San Jose", abbr: "BERY" },
-  { name: "Castro Valley", abbr: "CAST" },
-  { name: "Civic Center/UN Plaza", abbr: "CIVC" },
-  { name: "Coliseum", abbr: "COLS" },
-  { name: "Colma", abbr: "COLM" },
-  { name: "Concord", abbr: "CONC" },
-  { name: "Daly City", abbr: "DALY" },
-  { name: "Downtown Berkeley", abbr: "DBRK" },
-  { name: "Dublin/Pleasanton", abbr: "DUBL" },
-  { name: "El Cerrito del Norte", abbr: "DELN" },
-  { name: "El Cerrito Plaza", abbr: "PLZA" },
-  { name: "Embarcadero", abbr: "EMBR" },
-  { name: "Fremont", abbr: "FRMT" },
-  { name: "Fruitvale", abbr: "FTVL" },
-  { name: "Glen Park", abbr: "GLEN" },
-  { name: "Hayward", abbr: "HAYW" },
-  { name: "Lafayette", abbr: "LAFY" },
-  { name: "Lake Merritt", abbr: "LAKE" },
-  { name: "MacArthur", abbr: "MCAR" },
-  { name: "Millbrae", abbr: "MLBR" },
-  { name: "Milpitas", abbr: "MLPT" },
-  { name: "Montgomery St.", abbr: "MONT" },
-  { name: "North Berkeley", abbr: "NBRK" },
-  { name: "North Concord/Martinez", abbr: "NCON" },
-  { name: "Oakland International Airport", abbr: "OAKL" },
-  { name: "Orinda", abbr: "ORIN" },
-  { name: "Pittsburg/Bay Point", abbr: "PITT" },
-  { name: "Pittsburg Center", abbr: "PCTR" },
-  { name: "Pleasant Hill/Contra Costa Centre", abbr: "PHIL" },
-  { name: "Powell St.", abbr: "POWL" },
-  { name: "Richmond", abbr: "RICH" },
-  { name: "Rockridge", abbr: "ROCK" },
-  { name: "San Bruno", abbr: "SBRN" },
-  { name: "San Francisco International Airport", abbr: "SFIA" },
-  { name: "San Leandro", abbr: "SANL" },
-  { name: "South Hayward", abbr: "SHAY" },
-  { name: "South San Francisco", abbr: "SSAN" },
-  { name: "Union City", abbr: "UCTY" },
-  { name: "Walnut Creek", abbr: "WCRK" },
-  { name: "Warm Springs/South Fremont", abbr: "WARM" },
-  { name: "West Dublin/Pleasanton", abbr: "WDUB" },
-  { name: "West Oakland", abbr: "WOAK" }
+"use strict";
+let currentStation = "EMBR";
+let logSeq = 0;
+const stations = [
+    { name: "12th St. Oakland City Center", abbr: "12TH" },
+    { name: "16th St. Mission", abbr: "16TH" },
+    { name: "19th St. Oakland", abbr: "19TH" },
+    { name: "24th St. Mission", abbr: "24TH" },
+    { name: "Antioch", abbr: "ANTC" },
+    { name: "Ashby", abbr: "ASHB" },
+    { name: "Balboa Park", abbr: "BALB" },
+    { name: "Bay Fair", abbr: "BAYF" },
+    { name: "Berryessa/North San Jose", abbr: "BERY" },
+    { name: "Castro Valley", abbr: "CAST" },
+    { name: "Civic Center/UN Plaza", abbr: "CIVC" },
+    { name: "Coliseum", abbr: "COLS" },
+    { name: "Colma", abbr: "COLM" },
+    { name: "Concord", abbr: "CONC" },
+    { name: "Daly City", abbr: "DALY" },
+    { name: "Downtown Berkeley", abbr: "DBRK" },
+    { name: "Dublin/Pleasanton", abbr: "DUBL" },
+    { name: "El Cerrito del Norte", abbr: "DELN" },
+    { name: "El Cerrito Plaza", abbr: "PLZA" },
+    { name: "Embarcadero", abbr: "EMBR" },
+    { name: "Fremont", abbr: "FRMT" },
+    { name: "Fruitvale", abbr: "FTVL" },
+    { name: "Glen Park", abbr: "GLEN" },
+    { name: "Hayward", abbr: "HAYW" },
+    { name: "Lafayette", abbr: "LAFY" },
+    { name: "Lake Merritt", abbr: "LAKE" },
+    { name: "MacArthur", abbr: "MCAR" },
+    { name: "Millbrae", abbr: "MLBR" },
+    { name: "Milpitas", abbr: "MLPT" },
+    { name: "Montgomery St.", abbr: "MONT" },
+    { name: "North Berkeley", abbr: "NBRK" },
+    { name: "North Concord/Martinez", abbr: "NCON" },
+    { name: "Oakland International Airport", abbr: "OAKL" },
+    { name: "Orinda", abbr: "ORIN" },
+    { name: "Pittsburg/Bay Point", abbr: "PITT" },
+    { name: "Pittsburg Center", abbr: "PCTR" },
+    { name: "Pleasant Hill/Contra Costa Centre", abbr: "PHIL" },
+    { name: "Powell St.", abbr: "POWL" },
+    { name: "Richmond", abbr: "RICH" },
+    { name: "Rockridge", abbr: "ROCK" },
+    { name: "San Bruno", abbr: "SBRN" },
+    { name: "San Francisco International Airport", abbr: "SFIA" },
+    { name: "San Leandro", abbr: "SANL" },
+    { name: "South Hayward", abbr: "SHAY" },
+    { name: "South San Francisco", abbr: "SSAN" },
+    { name: "Union City", abbr: "UCTY" },
+    { name: "Walnut Creek", abbr: "WCRK" },
+    { name: "Warm Springs/South Fremont", abbr: "WARM" },
+    { name: "West Dublin/Pleasanton", abbr: "WDUB" },
+    { name: "West Oakland", abbr: "WOAK" }
 ];
-
 function populateDropdown() {
-  var selector = $('#stationSelect');
-  selector.empty();
-  console.log('Populating dropdown with ' + stations.length + ' stations');
-  stations.forEach(function(stn) {
-    var option = $('<option>').text(stn.name).val(stn.abbr);
-    if (stn.abbr === currentStation) {
-      option.attr('selected', 'selected');
-    }
-    selector.append(option);
-  });
+    const selector = $("#stationSelect");
+    selector.empty();
+    logInfo("Populating dropdown with " + stations.length + " stations");
+    stations.forEach((stn) => {
+        const option = $("<option>").text(stn.name).val(stn.abbr);
+        if (stn.abbr === currentStation) {
+            option.attr("selected", "selected");
+        }
+        selector.append(option);
+    });
 }
-
 function ajaxQuery() {
-  var u = `https://api.bart.gov/api/etd.aspx?cmd=etd&orig=${currentStation}&key=MW9S-E7SL-26DU-VV8V&json=y`;
-  console.log('====>' + u);
-  $.ajax({
-    url: u,
-    method: 'GET'
-  }).then(function(response) {
-    $('#Platform1').empty();
-    $('#Platform2').empty();
-    
-    if (!response || !response.root || !response.root.station || !response.root.station[0]) {
-       console.error("Invalid API response", response);
-       return;
-    }
-
-    var stationData = response.root.station[0];
-    if (!stationData.etd || stationData.etd.length === 0) {
-      $('#Platform1').append($('<p>').addClass('minutes-text').text("No upcoming trains"));
-      return;
-    }
-
-    var etds = stationData.etd;
-    for (var i = 0; i < etds.length; i++) {
-      var dest = etds[i].destination;
-      var estimates = etds[i].estimate;
-      
-      if (!Array.isArray(estimates)) {
-        estimates = [estimates];
-      }
-
-      var min = [];
-      var bartPlatform;
-      for (var e = 0; e < estimates.length; e++) {
-        min.push(estimates[e].minutes);
-        bartPlatform = estimates[e].platform;
-      }
-      var divTag = $('<div>').addClass('dest-name text-left').text(dest);
-      var pTag = $('<p>').addClass('minutes-text').text(`Mins: ${min.join(', ')}`);
-      if (bartPlatform == 1) {
-        $('#Platform1').append(divTag).append(pTag);
-      } else {
-        $('#Platform2').append(divTag).append(pTag);
-      }
-    }
-  }).fail(function(err) {
-    console.error("API Request Failed", err);
-  });
+    const u = `/api/etd?orig=${currentStation}`;
+    logInfo("Requesting " + u);
+    $.ajax({
+        url: u,
+        method: "GET"
+    })
+        .then((response) => {
+        var _a, _b;
+        $("#Platform1").empty();
+        $("#Platform2").empty();
+        const stationData = (_b = (_a = response === null || response === void 0 ? void 0 : response.root) === null || _a === void 0 ? void 0 : _a.station) === null || _b === void 0 ? void 0 : _b[0];
+        if (!stationData) {
+            logError("Invalid API response");
+            console.error("Invalid API response", response);
+            return;
+        }
+        if (!stationData.etd || stationData.etd.length === 0) {
+            $("#Platform1")
+                .append($("<p>").addClass("minutes-text").text("No upcoming trains"));
+            logInfo("No upcoming trains");
+            return;
+        }
+        const etds = stationData.etd;
+        for (let i = 0; i < etds.length; i++) {
+            const dest = etds[i].destination;
+            const estimatesRaw = etds[i].estimate;
+            const estimates = Array.isArray(estimatesRaw)
+                ? estimatesRaw
+                : [estimatesRaw];
+            const min = [];
+            let bartPlatform = "";
+            for (let e = 0; e < estimates.length; e++) {
+                min.push(estimates[e].minutes);
+                bartPlatform = estimates[e].platform;
+            }
+            const divTag = $("<div>").addClass("dest-name text-left").text(dest);
+            const pTag = $("<p>")
+                .addClass("minutes-text")
+                .text(`Mins: ${min.join(", ")}`);
+            if (bartPlatform === "1") {
+                $("#Platform1").append(divTag).append(pTag);
+            }
+            else {
+                $("#Platform2").append(divTag).append(pTag);
+            }
+        }
+    })
+        .fail((err) => {
+        logError("API Request Failed");
+        console.error("API Request Failed", err);
+    });
 }
-
-$(document).ready(function() {
-  populateDropdown();
-  ajaxQuery();
-
-  $('#stationSelect').on('change', function() {
-    currentStation = $(this).val();
+function logInfo(message) {
+    appendLog("INFO", message);
+}
+function logError(message) {
+    appendLog("ERROR", message);
+}
+function appendLog(level, message) {
+    logSeq += 1;
+    const timestamp = new Date().toLocaleTimeString();
+    const panel = $("#logPanel");
+    const line = $("<div>").addClass("log-line");
+    const tag = $("<span>").addClass("log-tag").text(level);
+    const text = $("<span>").text(`[${timestamp}] ${message}`);
+    line.append(tag).append(text);
+    panel.prepend(line);
+    if (panel.children().length > 50) {
+        panel.children().last().remove();
+    }
+}
+$(document).ready(() => {
+    populateDropdown();
     ajaxQuery();
-  });
-
-  setInterval(function() {
-    ajaxQuery();
-  }, 15 * 1000);
+    $("#stationSelect").on("change", function () {
+        const nextStation = $(this).val();
+        currentStation = typeof nextStation === "string" ? nextStation : currentStation;
+        logInfo("Station changed to " + currentStation);
+        ajaxQuery();
+    });
+    window.setInterval(() => {
+        ajaxQuery();
+    }, 15 * 1000);
+    $("#clearLogs").on("click", () => {
+        $("#logPanel").empty();
+        logSeq = 0;
+    });
 });
