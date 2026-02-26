@@ -2,6 +2,9 @@
 let currentStation = "EMBR";
 let logSeq = 0;
 let warnedNoProxy = false;
+const refreshSeconds = 15;
+let remainingSeconds = refreshSeconds;
+let refreshTimer;
 const isLocalhost = window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1";
 const configuredProxyBase = window.BART_PROXY_BASE;
@@ -130,6 +133,28 @@ function ajaxQuery() {
         console.error("API Request Failed", err);
     });
 }
+function updateRefreshUI() {
+    const progress = $("#refreshProgress");
+    const text = $("#refreshSeconds");
+    const radius = 36;
+    const circumference = 2 * Math.PI * radius;
+    const ratio = Math.max(0, Math.min(1, remainingSeconds / refreshSeconds));
+    const offset = circumference * (1 - ratio);
+    progress.attr("stroke-dasharray", String(circumference));
+    progress.attr("stroke-dashoffset", String(offset));
+    text.text(`${remainingSeconds}s`);
+}
+function resetRefreshTimer(triggerFetch) {
+    remainingSeconds = refreshSeconds;
+    updateRefreshUI();
+    $(".refresh-badge").addClass("refresh-pulse");
+    window.setTimeout(() => {
+        $(".refresh-badge").removeClass("refresh-pulse");
+    }, 400);
+    if (triggerFetch) {
+        ajaxQuery();
+    }
+}
 function logInfo(message) {
     appendLog("INFO", message);
 }
@@ -151,16 +176,22 @@ function appendLog(level, message) {
 }
 $(document).ready(() => {
     populateDropdown();
+    updateRefreshUI();
     ajaxQuery();
     $("#stationSelect").on("change", function () {
         const nextStation = $(this).val();
         currentStation = typeof nextStation === "string" ? nextStation : currentStation;
         logInfo("Station changed to " + currentStation);
-        ajaxQuery();
+        resetRefreshTimer(true);
     });
-    window.setInterval(() => {
-        ajaxQuery();
-    }, 15 * 1000);
+    refreshTimer = window.setInterval(() => {
+        remainingSeconds -= 1;
+        if (remainingSeconds <= 0) {
+            resetRefreshTimer(true);
+            return;
+        }
+        updateRefreshUI();
+    }, 1000);
     $("#clearLogs").on("click", () => {
         $("#logPanel").empty();
         logSeq = 0;

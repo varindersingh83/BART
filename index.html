@@ -39,7 +39,25 @@
     <div id="bgImg"></div>
     <div class="main-content">
       <div class="app-card shadow-retro border-black p-4">
-        <h1 class="title-text mb-4">BART TRACKER</h1>
+        <div class="header-row mb-4">
+          <h1 class="title-text mb-0">BART TRACKER</h1>
+          <div class="refresh-indicator border-black shadow-retro-sm">
+            <div class="refresh-label">NEXT REFRESH</div>
+            <div class="refresh-badge">
+              <svg class="refresh-ring" viewBox="0 0 100 100" aria-hidden="true">
+                <circle class="refresh-ring-bg" cx="50" cy="50" r="36"></circle>
+                <circle
+                  id="refreshProgress"
+                  class="refresh-ring-progress"
+                  cx="50"
+                  cy="50"
+                  r="36"
+                ></circle>
+              </svg>
+              <div id="refreshSeconds" class="refresh-seconds">15s</div>
+            </div>
+          </div>
+        </div>
         
         <div class="form-group mb-4">
           <label for="stationSelect" class="label-text">CHOOSE STATION</label>

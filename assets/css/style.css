@@ -53,6 +53,76 @@ body {
   margin-bottom: 25px;
 }
 
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.refresh-indicator {
+  background: var(--white);
+  padding: 10px 12px;
+  border: 4px solid var(--black);
+  min-width: 160px;
+  text-align: center;
+}
+
+.refresh-label {
+  font-weight: 900;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.refresh-badge {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  margin: 0 auto;
+}
+
+.refresh-ring {
+  width: 74px;
+  height: 74px;
+  transform: rotate(-90deg);
+}
+
+.refresh-ring-bg {
+  fill: none;
+  stroke: var(--black);
+  stroke-width: 8;
+  opacity: 0.15;
+}
+
+.refresh-ring-progress {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 8;
+  stroke-linecap: square;
+  transition: stroke-dashoffset 0.5s linear;
+}
+
+.refresh-seconds {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.refresh-pulse {
+  animation: refreshPulse 0.4s ease-out;
+}
+
+@keyframes refreshPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
 .label-text {
   font-weight: 900;
   display: block;
@@ -162,5 +232,9 @@ h4 {
 @media (max-width: 576px) {
   .title-text {
     font-size: 2rem;
+  }
+
+  .refresh-indicator {
+    width: 100%;
   }
 }
